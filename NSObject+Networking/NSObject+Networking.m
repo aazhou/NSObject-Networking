@@ -67,6 +67,10 @@ static const char *kHTTPOperationManagerPropertyKey = "kHTTPOperationManagerProp
     [self onRequestStart:operation];
 }
 
+- (NSDictionary *)defaultHTTPHeaderFields {
+    return nil;
+}
+
 #pragma mark - SharedOperationManager
 
 - (AFHTTPRequestOperationManager *)sharedOperationManager {
@@ -75,9 +79,11 @@ static const char *kHTTPOperationManagerPropertyKey = "kHTTPOperationManagerProp
         AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
         securityPolicy.allowInvalidCertificates = YES;
         manager.securityPolicy = securityPolicy;
-        if (DefaultUserAgent) {
-            for (NSString *key in DefaultUserAgent.allKeys) {
-                [manager.requestSerializer setValue:[DefaultUserAgent objectForKey:key] forHTTPHeaderField:key];
+        NSDictionary *headers = [self defaultHTTPHeaderFields];
+        if (headers) {
+            for (NSString *key in headers.allKeys) {
+                [manager.requestSerializer setValue:[headers objectForKey:key]
+                                 forHTTPHeaderField:key];
             }
         }
         self.operationManager = manager;

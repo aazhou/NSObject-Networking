@@ -12,8 +12,6 @@
 
 @class AFHTTPRequestOperationManager;
 
-static NSDictionary *DefaultUserAgent;
-
 typedef void(^HTTPCompletionBlock)(ServiceResult *result);
 
 @interface NSObject (Networking)
@@ -38,5 +36,7 @@ typedef void(^HTTPCompletionBlock)(ServiceResult *result);
              callback:(HTTPCompletionBlock)callback;
 
 - (void)cancelAllHTTPRequest;
+
+- (NSDictionary *)defaultHTTPHeaderFields;
 
 @end
